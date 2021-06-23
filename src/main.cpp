@@ -56,8 +56,8 @@ struct ProgramState {
     bool ImGuiEnabled = false;
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
-    glm::vec3 backpackPosition = glm::vec3(0.0f);
-    float backpackScale = 1.0f;
+    glm::vec3 itemPosition = glm::vec3(0.0f);
+    float itemScale = 1.0f;
     PointLight pointLight;
     ProgramState()
             : camera(glm::vec3(0.0f, 0.0f, 3.0f)) {}
@@ -137,7 +137,7 @@ int main() {
     }
 
     // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-    //stbi_set_flip_vertically_on_load(true);
+    // stbi_set_flip_vertically_on_load(true);
 
     programState = new ProgramState;
     programState->LoadFromFile("resources/program_state.txt");
@@ -162,6 +162,7 @@ int main() {
     // build and compile shaders
     // -------------------------
     Shader ourShader("resources/shaders/2.model_lighting.vs", "resources/shaders/2.model_lighting.fs");
+    Shader groundShader("resources/shaders/ground.vs", "resources/shaders/ground.fs");
 
     // load models
     // -----------
@@ -181,7 +182,24 @@ int main() {
 
 
     // draw in wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+
+    //TEST TEST
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    vector<Vertex> vertices = {
+            Vertex(0.5f,  0.5f, 0.0f),  // top right
+            Vertex(0.5f, -0.5f, 0.0f),  // bottom right
+            Vertex(-0.5f, -0.5f, 0.0f),  // bottom left
+            Vertex(-0.5f,  0.5f, 0.0f)   // top left
+    };
+    vector<unsigned int> indices = {  // note that we start from 0!
+            0, 1, 3,  // first Triangle
+            1, 2, 3   // second Triangle
+    };
+    Mesh ground(vertices, indices, vector<Texture>(0));
 
     // render loop
     // -----------
@@ -224,13 +242,37 @@ int main() {
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model,
-                               programState->backpackPosition); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
+                               programState->itemPosition); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(programState->itemScale));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);
+
+
+
+
+
+        groundShader.use();
+        //glBindVertexArray(VAO);
+
+        glm::mat4 model2 = glm::mat4(1.0f);
+        model2 = glm::translate(model2,
+                                glm::vec3(0.0f,0.7f,0.0f));
+        model2 = glm::scale(model2, glm::vec3(50.0f));
+        model2 = glm::rotate(model2, glm::pi<float>()/2, glm::vec3(1.0f, 0.0f, 0.0f));
+
+        groundShader.setMat4("model", model2);
+        groundShader.setMat4("projection", projection);
+        groundShader.setMat4("view", view);
+
+
+        ground.Draw(groundShader);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+
 
 
 
@@ -312,8 +354,8 @@ void DrawImGui(ProgramState *programState) {
         ImGui::Text("Hello text");
         ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
         ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
-        ImGui::DragFloat3("Backpack position", (float*)&programState->backpackPosition);
-        ImGui::DragFloat("Backpack scale", &programState->backpackScale, 0.05, 0.1, 4.0);
+        ImGui::DragFloat3("Item position", (float*)&programState->itemPosition);
+        ImGui::DragFloat("Item scale", &programState->itemScale, 0.05, 0.1, 4.0);
 
         ImGui::DragFloat("pointLight.constant", &programState->pointLight.constant, 0.05, 0.0, 1.0);
         ImGui::DragFloat("pointLight.linear", &programState->pointLight.linear, 0.05, 0.0, 1.0);

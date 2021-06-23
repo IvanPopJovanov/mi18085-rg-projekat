@@ -13,6 +13,10 @@
 using namespace std;
 
 struct Vertex {
+    Vertex() {}
+    Vertex(float x, float y, float z) {
+        this->Position = glm::vec3(x,y,z);
+    }
     // position
     glm::vec3 Position;
     // normal

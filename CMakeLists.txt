@@ -42,7 +42,7 @@ include_directories(${CMAKE_BINARY_DIR}/configuration)
 
 include_directories(include/)
 add_executable(${PROJECT_NAME}
-        ${SOURCES})
+        ${SOURCES} include/project/my_gl_util.h include/project/program_state.h include/project/my_imgui_util.h include/project/my_model_instance.h include/project/my_mesh_instance.h include/project/my_light.h include/project/my_callbacks.h)
 
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 

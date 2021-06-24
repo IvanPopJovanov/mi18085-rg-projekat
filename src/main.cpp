@@ -183,8 +183,7 @@ int main() {
         specBox.Draw(model3, lights);
 
         model3 = glm::mat4(1.0f);
-        model3 = glm::translate(model3,
-                                glm::vec3(5.0f,1.2f,3.0f));
+        model3 = glm::translate(model3, glm::vec3( 5.0 * cos(currentFrame), 5.0f, 5.0 * sin(currentFrame)));
         model3 = glm::scale(model3, glm::vec3(1.0f));
         model3 = glm::rotate(model3, glm::pi<float>()/2, glm::vec3(1.0f, 0.0f, 0.0f));
 

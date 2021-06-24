@@ -42,7 +42,7 @@ int main() {
 
     Light& pointLight = programState->pointLight;
     pointLight.type = LIGHT_TYPE_POINT;
-    pointLight.position = glm::vec3(0.0f, 8.0, 0.0);
+    pointLight.position = glm::vec3(0.0f, 8, 0.0);
     pointLight.ambient = glm::vec3(0.1, 0.1, 0.1);
     pointLight.diffuse = glm::vec3(0.6, 0.6, 0.6);
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);

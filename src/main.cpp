@@ -191,7 +191,11 @@ int main() {
 
         skybox_draw();
 
+//        glEnable(GL_FRAMEBUFFER_SRGB);
+
         framebuffer_second_pass();
+
+//        glDisable(GL_FRAMEBUFFER_SRGB);
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);

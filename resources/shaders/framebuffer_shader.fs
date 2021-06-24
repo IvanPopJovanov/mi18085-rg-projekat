@@ -12,4 +12,7 @@ void main()
     if(inverted) {
         FragColor = vec4(vec3(1.0 - texture(screenTexture, TexCoords)), 1.0);
     }
+    // apply gamma correction
+    float gamma = 2.2;
+    FragColor.rgb = pow(FragColor.rgb, vec3(1.0/gamma));
 }

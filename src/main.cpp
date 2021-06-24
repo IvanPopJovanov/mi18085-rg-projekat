@@ -22,6 +22,7 @@
 #include <project/my_mesh_instance.h>
 
 #include <project/my_framebuffer.h>
+#include <project/my_skybox.h>
 
 #include <iostream>
 
@@ -130,6 +131,7 @@ int main() {
     MyMeshInstance specBox(vertices2,indices2,textures,"basic");
 
     framebuffer_init();
+    skybox_init();
 
     while (!glfwWindowShouldClose(window)) {
         // per-frame time logic
@@ -187,6 +189,8 @@ int main() {
         model3 = glm::rotate(model3, glm::pi<float>()/2, glm::vec3(1.0f, 0.0f, 0.0f));
 
         specBox.Draw(model3, lights);
+
+        skybox_draw();
 
         framebuffer_second_pass();
 

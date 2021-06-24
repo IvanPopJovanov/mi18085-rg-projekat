@@ -92,7 +92,11 @@ vec3 CalcDirLight(Light light, vec3 normal, vec3 viewDir)
 
     //BLINN
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    spec = pow(max(dot(normal, halfwayDir), 0.0), 16.0);
+    spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess * 2);
+
+    if(dot(normal, lightDir) <= 0) {
+        spec = 0.0;//jako bitan bugfix
+    }
 
     // combine results
     vec3 ambient = light.ambient * vec3(texture(material.texture_diffuse1, TexCoords));
@@ -114,6 +118,10 @@ vec3 CalcPointLight(Light light, vec3 normal, vec3 fragPos, vec3 viewDir)
     //BLINN
     vec3 halfwayDir = normalize(lightDir + viewDir);
     spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess * 2);
+
+    if(dot(normal, lightDir) <= 0) {
+        spec = 0.0;//jako bitan bugfix
+    }
 
     // attenuation
     float distance = length(light.position - fragPos);
@@ -140,7 +148,11 @@ vec3 CalcSpotLight(Light light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
     //BLINN
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    spec = pow(max(dot(normal, halfwayDir), 0.0), 16.0);
+    spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess * 2);
+
+    if(dot(normal, lightDir) <= 0) {
+        spec = 0.0;//jako bitan bugfix
+    }
 
     // attenuation
     float distance = length(light.position - fragPos);

@@ -21,6 +21,8 @@
 #include <project/my_model_instance.h>
 #include <project/my_mesh_instance.h>
 
+#include <project/my_framebuffer.h>
+
 #include <iostream>
 
 int main() {
@@ -127,6 +129,7 @@ int main() {
 
     MyMeshInstance specBox(vertices2,indices2,textures,"basic");
 
+    framebuffer_init();
 
     while (!glfwWindowShouldClose(window)) {
         // per-frame time logic
@@ -139,6 +142,7 @@ int main() {
         // -----
         processInput(window);
 
+        framebuffer_first_pass();
 
         // render
         // ------
@@ -184,6 +188,7 @@ int main() {
 
         specBox.Draw(model3, lights);
 
+        framebuffer_second_pass();
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);

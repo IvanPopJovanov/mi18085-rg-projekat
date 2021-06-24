@@ -5,6 +5,8 @@
 #ifndef MI18085_RG_PROJEKAT_MY_CALLBACKS_H
 #define MI18085_RG_PROJEKAT_MY_CALLBACKS_H
 
+#include <project/my_framebuffer.h>
+
 //void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 //
 //void mouse_callback(GLFWwindow *window, double xpos, double ypos);
@@ -79,6 +81,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
+    }
+    if (key == GLFW_KEY_F2 && action == GLFW_PRESS) {
+        swap_inverted();
     }
 }
 

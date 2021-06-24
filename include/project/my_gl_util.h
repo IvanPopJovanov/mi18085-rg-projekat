@@ -46,6 +46,11 @@ GLFWwindow* my_init(const unsigned int SCR_WIDTH, const unsigned int SCR_HEIGHT)
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_ALWAYS);
+
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);
+//    glFrontFace(GL_CW);
 
     // draw in wireframe
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

@@ -8,15 +8,23 @@
 #include <learnopengl/model.h>
 #include <learnopengl/shader.h>
 
+bool showNormals = false;
+void swap_showNormals() {
+    showNormals = !showNormals;
+}
+
 class MyModelInstance {
 
     Model* model;
     Shader* shader;
+    Shader* normalShader;
 public:
     MyModelInstance(string modelPath, string shaderName) {
         this->shader = new Shader(("resources/shaders/" + shaderName + ".vs").c_str(), ("resources/shaders/" + shaderName + ".fs").c_str());
         this->model = new Model(("resources/objects/" + modelPath).c_str());
         this->model->SetShaderTextureNamePrefix("material.");
+
+        this->normalShader = new Shader("resources/shaders/9.3.normal_visualization.vs", "resources/shaders/9.3.normal_visualization.fs", "resources/shaders/9.3.normal_visualization.gs");
     }
 
     void Draw(glm::mat4 model, vector<Light> lights) {
@@ -50,6 +58,14 @@ public:
 
         this->shader->setMat4("model", model);
         this->model->Draw(*(this->shader));
+
+        if(showNormals) {
+            this->normalShader->use();
+            this->normalShader->setMat4("projection", projection);
+            this->normalShader->setMat4("view", view);
+            this->normalShader->setMat4("model", model);
+            this->model->Draw(*(this->normalShader));
+        }
     }
 };
 
